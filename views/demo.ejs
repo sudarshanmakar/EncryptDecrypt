@@ -1,0 +1,22 @@
+Here is an example of how you can encrypt and decrypt data using the RSA algorithm on the client side in pure JavaScript using the jsencrypt library and the keys.
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+<script>
+    // Generate a pair of keys
+    var crypt = new JSEncrypt({
+        modulusLength: 2048,
+        publicKeyEncoding: { type: 'spki', format: 'pem' },
+        privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
+    });
+    crypt.setPublicKey(publicKey);
+    crypt.setPrivateKey(privateKey);
+
+    // Encryption
+    var plaintext = 'This is the message to be encrypted';
+    var encrypted = crypt.encrypt(plaintext);
+    console.log('Encrypted:', encrypted);
+
+    // Decryption
+    var decrypted = crypt.decrypt(encrypted);
+    // console.log('Decrypted:', decrypted);
+</script>

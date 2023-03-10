@@ -1,0 +1,12 @@
+<script src="/jsencrypt.min.js"></script>
+<script>
+let privateKey = `<%= privateKey %>`;
+let encrypted = `<%= encrypted %>`;
+
+var crypt = new JSEncrypt();
+crypt.setPrivateKey(privateKey);
+
+var decrypted = crypt.decrypt(encrypted);
+console.log(decrypted);
+console.log(privateKey,encrypted);
+</script>

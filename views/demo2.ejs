@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+    <script>
+        var crypt = new JSEncrypt({ default_key_size: 2048 });
+        var privateKey;
+        var publicKey;
+
+        function generateKeys() {
+            crypt.getKey();
+            privateKey = crypt.getPrivateKey();
+            publicKey = crypt.getPublicKey();
+            console.log("Public Key: ", publicKey);
+            console.log("Private Key: ", privateKey);
+        }
+
+        function encrypt() {
+            var plaintext = document.getElementById("plaintext").value;
+            crypt.setPublicKey(publicKey);
+            var encrypted = crypt.encrypt(plaintext);
+            console.log("Encrypted:", encrypted);
+            document.getElementById("encrypted").value = encrypted;
+        }
+
+        function decrypt() {
+            var encrypted = document.getElementById("encrypted").value;
+            crypt.setPrivateKey(privateKey);
+            var decrypted = crypt.decrypt(encrypted);
+            console.log("Decrypted:", decrypted);
+            document.getElementById("decrypted").value = decrypted;
+        }
+
+        function share_key() {
+            //share private key
+            // fetch('/key', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({ "key": 78912 })
+            // })
+            // .then(response => response.json())
+            // .then(response => console.log(JSON.stringify(response)))
+
+            fetch('/key', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer abcdxyz',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    key : 1109
+                }),
+            })
+                .then((res) => {
+                    return res.json();
+                })
+                .then((data) => console.log(data));
+        }
+
+        share_key();
+    </script>
+</head>
+<body>
+<button onclick="generateKeys()">Generate Keys</button>
+<br />
+<br />
+<label for="plaintext">Enter plaintext:</label>
+<br />
+<textarea id="plaintext"></textarea>
+<br />
+<br />
+<button onclick="encrypt()">Encrypt</button>
+<br />
+<br />
+<label for="encrypted">Encrypted:</label>
+<br />
+<textarea id="encrypted" readonly></textarea>
+<br />
+<br />
+<button onclick="decrypt()">Decrypt</button>
+<br />
+<br />
+<label for="decrypted">Decrypted:</label>
+<br />
+<textarea id="decrypted" readonly></textarea>
+</body>
+</html>
